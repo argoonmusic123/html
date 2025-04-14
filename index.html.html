@@ -1,0 +1,43 @@
+# Voice Assistant Interaction
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Voice Assistant</title>
+    <script>
+        function speak(text) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            window.speechSynthesis.speak(utterance);
+        }
+
+        function listen() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.onresult = function(event) {
+                const transcript = event.results[0][0].transcript;
+                document.getElementById('userInput').value = transcript;
+                respond(transcript);
+            }
+            recognition.start();
+        }
+
+        function respond(input) {
+            let response;
+            if (input.includes("hello")) {
+                response = "Hello! How can I assist you today?";
+            } else if (input.includes("weather")) {
+                response = "The weather is sunny with a high of 75 degrees.";
+            } else {
+                response = "I'm sorry, I didn't understand that.";
+            }
+            speak(response);
+        }
+    </script>
+</head>
+<body>
+    <h1>Voice Assistant</h1>
+    <button onclick="listen()">Talk to Assistant</button>
+    <input type="text" id="userInput" placeholder="Your input will appear here" />
+</body>
+</html>
